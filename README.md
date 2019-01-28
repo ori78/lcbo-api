@@ -4,7 +4,7 @@
 
 Hello :wave:, welcome to LCBO API :slightly_smiling_face:
 
-If you find yourself here wondering "what's an LCBO API?", let me explain. In [Ontario, Canada](https://en.wikipedia.org/wiki/Ontario) all beverage alcohol sales go through a government owned corporation called the [Liquor Control Board of Ontario (LCBO)](https://en.wikipedia.org/wiki/Liquor_Control_Board_of_Ontario) which handles retail and distribution of alcoholic beverages throughout the province. The LCBO has numerous retail stores and a website that hosts a catalog of every product, store, and even inventory levels. They publish a seasonal catalog with recipes, editorials, and other content called [Food & Drink](http://foodanddrink.ca). They also contribute billions of dollars of revenue to our public healthcare system annually. It's a fascinating situation when you think about it, other places have similar systems but to my knowledge none have the breadth and depth of the LCBO. So, now you know what it is, pretty cool eh?
+If you find yourself here wondering "what's an LCBO API?", let me explain. In Ontario, Canada all beverage alcohol sales go through a government owned corporation called the Liquor Control Board of Ontario (LCBO) which handles retail and distribution of alcoholic beverages throughout the province. The LCBO has numerous retail stores and a website that hosts a catalog of every product, store, and even inventory levels. They publish a seasonal catalog with recipes, editorials, and other content called Food & Drink. They also contribute billions of dollars of revenue to our public healthcare system annually. It's a fascinating situation when you think about it, other places have similar systems but to my knowledge none have the breadth and depth of the LCBO. So, now you know what it is, pretty cool eh?
 
 **This might be interesting to you even if you don't live in Ontario, Canada, if:**
 
@@ -120,24 +120,24 @@ Ctrl-C
 
 That means, press the `Control` + `C` keys simultaneously.
 
-You can download an archive of the latest production database dump from my personal Amazon S3 account [here](https://heycarsten.s3.amazonaws.com/lcboapi-2019-01-21.tgz). Please note that there are sensitive tables (emails, users, keys) and that data has been excluded from this file.
+You can download an archive of the latest production database dump from my personal Amazon S3 account [here](https://s3.amazonaws.com/heycarsten/lcboapi-2018-12-17.tbz2). Please note that there are sensitive tables (emails, users, keys) and that data has been excluded from this file.
 
 Download and extract the archive in the `tmp` directory of this project:
 
 ```
 cd tmp
-curl -O https://heycarsten.s3.amazonaws.com/lcboapi-2019-01-21.tgz
-tar xzf lcboapi-2019-01-21.tgz
+curl -O https://s3.amazonaws.com/heycarsten/lcboapi-2018-12-17.bz2
+tar xzf lcboapi-2018-12-17.bz2
 cd ..
 ```
 
-The file is about 300MiB, so it might take a while to download depending on your connection speed (this happens on the line that starts with `curl`).
+The file is about 180MiB, so it might take a while to download depending on your connection speed (this happens on the line that starts with `curl`).
 
 Once you've downloaded and extracted the database file, you can load the data into the database:
 
 ```
 docker-compose run --rm app rake db:create
-docker-compose run --rm app bash -c 'pv tmp/lcboapi-2019-01-21.sql | psql -q -h db -U $POSTGRES_USER $POSTGRES_DB > /dev/null'
+docker-compose run --rm app bash -c 'pv tmp/lcboapi-2018-12-17.sql | psql -q -h db -U $POSTGRES_USER $POSTGRES_DB > /dev/null'
 ```
 
 The first line, ending in `rake db:create` will create the database schemas in Postgres for development and testing, the second line will load the database dump into the development database. The progress bar indicates how much of the data has been piped into the database, once that completes indexes will be built. This might take some time depending on your machine, it's a fair amount of data. Then you can fire up the app again:
